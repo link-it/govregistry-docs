@@ -1,0 +1,896 @@
+openapi: 3.0.3
+info:
+  title: GovSign
+  version: 1.0.0
+servers:
+  - url: https://example.com/api/v1
+    description: production
+paths:
+  /organizations/{id}:
+    get:
+      operationId: getOrganization
+      tags:
+        - Organization
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+      responses:
+        "200":
+          description: The organization detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrganizationDetailView"
+    patch:
+      operationId: patchOrganization
+      tags:
+        - Organization
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+      responses:
+        "200":
+          description: The organization detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrganizationDetailView"
+  /dossiers:
+    post:
+      operationId: createDossier
+      tags:
+        - Dossier
+      summary: Create a Dossier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DossierCreateBody"
+      responses:
+        "201":
+          description: The Dossier detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DossierDetailView"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        default:
+          $ref: "#/components/responses/Unexpected"
+
+    get:
+      operationId: searchDossier
+      tags:
+        - Dossier
+      summary: Search Dossier
+      responses:
+        "200":
+          description: The dossier detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DossierViewList"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        default:
+          $ref: "#/components/responses/Unexpected"
+
+  /dossiers/{id}:
+    get:
+      operationId: getDossier
+      tags:
+        - Dossier
+      summary: Get a Dossier by Id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+      responses:
+        "200":
+          description: The Dossier detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DossierDetailView"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/Unexpected"
+
+  /documents:
+    post:
+      operationId: createDocument
+      tags:
+        - Document
+      summary: Upload a document
+      requestBody:
+        required: true
+        content:
+          application/pdf:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "201":
+          description: The uploaded document details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentDetailView"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        default:
+          $ref: "#/components/responses/Unexpected"
+
+  /documents/{id}:
+    get:
+      operationId: getDocument
+      tags:
+        - Document
+      summary: Read document details by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+      responses:
+        "200":
+          description: The document details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentDetailView"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: "#/components/responses/Unexpected"
+
+  /documents/{id}/download:
+    get:
+      operationId: downloadDocument
+      tags:
+        - Document
+      summary: Download a document by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+      responses:
+        "200":
+          description: The document details
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: "#/components/responses/Unexpected"
+
+  /signature-requests:
+    post:
+      operationId: createSignatureRequest
+      tags:
+        - Signature Request
+      summary: Create a Signature Request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignatureRequestCreateBody"
+      responses:
+        "201":
+          description: The Signature Request detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignatureRequestDetailView"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/UnprocessableContent"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        default:
+          $ref: "#/components/responses/Unexpected"
+
+  /signature-requests/{id}:
+    get:
+      operationId: getSignatureRequest
+      tags:
+        - Signature Request
+      summary: Get a Signature Request by Id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+      responses:
+        "200":
+          description: The Signature Request detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignatureRequestDetailView"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        default:
+          $ref: "#/components/responses/Unexpected"
+
+  /utils/find-signer:
+    post:
+      operationId: findSigner
+      tags:
+        - Utils
+      summary: Find signer id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignerFindByFiscalCodeBody"
+      responses:
+        "200":
+          description: The signer detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignerDetailView'
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+components:
+
+  responses:
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+    BadRequest:
+      description: Validation error on body
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+    Forbidden:
+      description: You don't have enough privileges to perform this action
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+    UnprocessableContent:
+      description: Unprocessable Content
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+    TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+  schemas:
+    ProblemDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: |-
+            An absolute URI that identifies the problem type. When dereferenced,
+            it SHOULD provide human-readable documentation for the problem type
+            (e.g., using HTML).
+          default: about:blank
+          example: https://example.com/problem/constraint-violation
+        title:
+          type: string
+          description: >-
+            A short, summary of the problem type. Written in english and
+            readable
+
+            for engineers (usually not suited for non technical stakeholders and
+
+            not localized); example: Service Unavailable
+        status:
+          type: integer
+          format: int32
+          description: >-
+            The HTTP status code generated by the origin server for this
+            occurrence of the problem.
+          minimum: 100
+          exclusiveMaximum: false
+          example: 200
+        detail:
+          type: string
+          description: |-
+            A human readable explanation specific to this occurrence of the
+            problem.
+          example: There was an error processing the request
+        instance:
+          type: string
+          format: uri
+          description: >-
+            An absolute URI that identifies the specific occurrence of the
+            problem. It may or may not yield further information if
+            dereferenced.
+
+    Clause:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 5
+          maxLength: 80
+        type:
+          type: string
+          enum: ["REQUIRED", "UNFAIR", "OPTIONAL"]
+      required:
+        - title
+        - type
+
+    DocumentUnassigned:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/Id"
+        metadata:
+          $ref: "#/components/schemas/DocumentMetadata"
+      required:
+        - id
+
+    DocumentsList:
+      type: object
+      properties:
+        items:
+          type: array
+          minItems: 1
+          items: 
+            $ref: "#/components/schemas/DocumentDetailView"
+        _links:
+          $ref: "#/components/schemas/ListLinks"
+      required:
+        - items
+        - _links
+
+    DocumentDetailView:
+      type: object
+      properties:
+        id: 
+          $ref: "#/components/schemas/Id"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        _links:
+          type: object
+          properties:
+            self:
+              $ref: "#/components/schemas/Link"
+            created_by:
+              $ref: "#/components/schemas/Link"
+            download:
+              $ref: "#/components/schemas/Link"              
+            download_signed:
+              $ref: "#/components/schemas/Link"
+          required:
+            - self
+            - download
+            - created_by
+      example:
+        id: 1234
+        created_at: "2022-12-31T23:59:59Z"
+        _links:
+          self:
+            href: "https://www.example.com/documents/1234"
+          download:
+            href: "https://www.example.com/documents/1234/download"
+          created_by:
+            href: "https://www.example.com/users/789"
+            embeddable: true
+
+    DocumentMetadata:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 3
+          maxLength: 60
+        signature_fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/SignatureField"
+      required:
+        - title
+
+    DocumentMetadataList:
+      type: array
+      minItems: 1
+      items:
+        $ref: "#/components/schemas/DocumentMetadata"
+
+    DossierCreateBody:
+      type: object
+      properties:
+        organization_id:
+          $ref: "#/components/schemas/Id"
+        reference_code:
+          $ref: '#/components/schemas/ReferenceCode'
+        title:
+          $ref: "#/components/schemas/DossierTitle"
+        support_email:
+          $ref: "#/components/schemas/Email"
+        documents_metadata:
+          $ref: "#/components/schemas/DocumentMetadataList"
+      required:
+        - organization_id
+        - reference_code
+        - title
+        - documents_metadata
+      example:
+        organization_id: 724
+        reference_code: "DPT-XVII-Contratto-150h"
+        title: "Contratto 150 ore"
+        support_email: "supporto.dipartimento-xvii@example.com"
+        documents_metadata:
+        - title: "Contratto"
+          signature_fields: 
+            - clause:
+                title: "Accettazione contratto"
+                type: "REQUIRED"
+              attrs:
+                coordinates:
+                  x: 360
+                  y: 100
+                size:
+                  w: 170
+                  h: 30
+                page: 1
+
+    DossierDetailView:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/Id"
+        reference_code:
+          $ref: '#/components/schemas/ReferenceCode'
+        title:
+          $ref: "#/components/schemas/DossierTitle"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        support_email:
+          $ref: "#/components/schemas/Email"
+        notification_email:
+          $ref: "#/components/schemas/Email"
+        documents_metadata:
+          $ref: "#/components/schemas/DocumentMetadataList"
+        version:
+          $ref: "#/components/schemas/Version"
+        _links:
+          type: object
+          required:
+            - self
+            - organization
+            - created_by
+          properties:
+            self:
+              $ref: "#/components/schemas/Link"
+            organization:
+              $ref: "#/components/schemas/Link"
+            created_by:
+              $ref: "#/components/schemas/Link"
+      required:
+        - id
+        - reference_code
+        - title
+        - created_at
+        - documents_metadata
+        - version
+        - _links
+      example:
+        id: 1
+        reference_code: "DPT-XVII-Contratto-150h"
+        title: "Contratto 150 ore"
+        created_at: "2022-12-31T23:59:59"
+        support_email: "support@example.com"
+        notification_email: "dpr-xvii@example.com"
+        version: 1
+        documents_metadata:
+        - title: "Contratto"
+          signature_fields: 
+            - clause:
+                title: "Accettazione contratto"
+                type: "REQUIRED"
+              attrs:
+                coordinates:
+                  x: 360
+                  y: 100
+                size:
+                  w: 170
+                  h: 30
+                page: 1
+        _links:
+          self: 
+            href: "https://www.example.com/dossiers/1"
+          organization: 
+            href: "https://www.example.com/organizations/123"
+            embeddable: true
+          created_by: 
+            href: "https://www.example.com/users/678"
+            embeddable: true
+
+    DossierView:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/Id"
+        reference_code:
+          $ref: '#/components/schemas/ReferenceCode'
+        title:
+          $ref: "#/components/schemas/DossierTitle"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        notification_email:
+          $ref: "#/components/schemas/Email"
+        version:
+          $ref: "#/components/schemas/Version"
+        _links:
+          type: object
+          required:
+            - self
+            - organization
+            - created_by
+          properties:
+            self:
+              $ref: "#/components/schemas/Link"
+            organization:
+              $ref: "#/components/schemas/Link"
+            created_by:
+              $ref: "#/components/schemas/Link"
+      required:
+        - id
+        - reference_code
+        - title
+        - created_at
+        - documents_metadata
+        - version
+        - _links
+      example:
+        id: 1
+        reference_code: "DPT-XVII-Contratto-150h"
+        title: "Contratto 150 ore"
+        created_at: "2022-12-31T23:59:59"
+        notification_email: "supporto.dipartimento-xvii@example.com"
+        version: 1
+        _links:
+          self: 
+            href: "https://www.example.com/dossiers/1"
+          organization: 
+            href: "https://www.example.com/organizations/123"
+            embeddable: true
+          created_by: 
+            href: "https://www.example.com/users/678"
+            embeddable: true
+
+    DossierViewList:
+      type: object
+      properties: 
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/DossierView"
+        _links:
+          $ref: "#/components/schemas/ListLinks"
+
+    DossierRef:
+      oneOf:
+        - type: object
+          properties:
+            id:
+              $ref: "#/components/schemas/Id"
+          required:
+            - id
+        - type: object
+          properties:
+            organization_tax_code:
+              $ref: "#/components/schemas/OrganizationTaxCode"
+            reference_code:
+              $ref: "#/components/schemas/ReferenceCode"
+            version:
+              $ref: "#/components/schemas/Version"
+          required:
+            - organization_tax_code
+            - reference_code
+      example: 
+        organization_tax_code: "01234567890"
+        reference_code: "DPT-XVII-Contratto-150h"
+
+    DossierTitle:
+      type: string
+      minLength: 3
+      maximum: 70
+
+    Email:
+      type: string
+      description: Email for a specific dossier.
+      format: email
+      example: demo@example.com
+
+    FiscalCode:
+      type: string
+      description: User's fiscal code.
+      format: FiscalCode
+      x-import: "@pagopa/ts-commons/lib/strings"
+      example: SPNDNL80R13C555X
+
+    Id:
+      type: number
+      format: int64
+      description: Entity Id
+      example: 123
+
+    IoId:
+      type: string
+      description: Identificativo assegnato da Firma con IO
+      example: 01GG4TG9FP2D3JPWFTAM0WEFTG
+    Link: 
+      type: object
+      properties:
+        href:
+          type: string
+          format: uri
+        embeddable:
+          type: boolean
+      required:
+        - href
+
+    ListLinks:
+      type: object
+      properties:
+        previous:
+          $ref: "#/components/schemas/Link"
+        next:
+          $ref: "#/components/schemas/Link"
+      example:
+        next:
+          href: "https://www.example.com/resource?offset=25"
+
+    NotificationDetailView:
+      type: object
+      properties:
+        io_message_id:
+          $ref: "#/components/schemas/IoId"
+      required:
+        - io_message_id
+
+    OrganizationDetailView:
+      type: object
+
+    OrganizationTaxCode:
+      type: string
+      pattern: "[0-9]{11}"
+
+    ReferenceCode:
+      type: string
+      pattern: '[a-zA-Z0-9\-]{3,35}'
+
+    SignatureField:
+      type: object
+      properties:
+        attrs:
+          $ref: "#/components/schemas/SignatureFieldAttrs"
+        clause:
+          $ref: "#/components/schemas/Clause"
+      required:
+        - attrs
+        - clause
+
+    SignatureFieldAttrs:
+      type: object
+      properties:
+        coordinates:
+          type: object
+          properties:
+            x: { type: number }
+            y: { type: number }
+          required: [x, y]
+        page:
+          type: number
+          minimum: 0
+        size:
+          type: object
+          properties:
+            w: { type: number, minimum: 0 }
+            h: { type: number, minimum: 0 }
+          required: [w, h]
+      required:
+        - coordinates
+        - page
+        - size
+
+    SignatureRequestCreateBody:
+      type: object
+      properties:
+        dossier:
+          $ref: "#/components/schemas/DossierRef"
+        signer:
+          type: object
+          properties:
+            fiscal_code:
+              $ref: "#/components/schemas/FiscalCode"
+          required:
+            - fiscal_code
+        expires_at:
+          $ref: "#/components/schemas/Timestamp"
+        documents:
+          type: array
+          minItems: 1
+          items: 
+            $ref: "#/components/schemas/DocumentUnassigned"
+      required:
+        - dossier_code
+        - fiscal_code
+        - documents
+
+    SignatureRequestDetailView:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/Id"
+        status:
+          $ref: "#/components/schemas/SignatureRequestStatus"
+        signer:
+          $ref: "#/components/schemas/SignerDetailView"
+        documents:
+          type: array
+          minItems: 1
+          items: 
+            $ref: "#/components/schemas/DocumentDetailView"
+        notification:
+          $ref: "#/components/schemas/NotificationDetailView"
+        expires_at:
+          $ref: "#/components/schemas/Timestamp"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        updated_at:
+          $ref: "#/components/schemas/Timestamp"
+        signed_at:
+          $ref: "#/components/schemas/Timestamp"
+        rejected_at:
+          $ref: "#/components/schemas/Timestamp"
+        reject_reason:
+          type: string
+        qr_code_url:
+          type: string
+          format: uri
+        cancelled_at:
+          $ref: "#/components/schemas/Timestamp"
+        _links:
+          type: object
+          properties:
+            dossier:
+              $ref: "#/components/schemas/Link"
+            requested_by:
+              $ref: "#/components/schemas/Link"
+      required:
+        - id
+        - status
+        - dossier_id
+        - signer
+        - expires_at
+        - documents
+        - created_at
+        - updated_at
+
+    SignerFindByFiscalCodeBody:
+      type: object
+      properties:
+        fiscal_code:
+          $ref: "#/components/schemas/FiscalCode"
+      required:
+        - fiscal_code
+
+    SignerDetailView:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/IoId"
+        fiscal_code:
+          $ref: "#/components/schemas/FiscalCode"
+      required:
+        - fiscal_code
+
+    SignatureRequestStatus:
+      type: string
+      enum:
+        - DRAFT
+        - REQUESTABLE
+        - UPLOADABLE
+        - READY
+        - PUBLISHED
+        - SIGNED
+        - REJECTED
+        - CANCELLED
+
+    Timestamp:
+      type: string
+      format: date-time
+
+    TaxCode:
+      type: string
+      description: Organization fiscal code.
+      example: "01234567890"
+
+    Version:
+      type: integer
+      format: int32
