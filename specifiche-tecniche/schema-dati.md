@@ -27,6 +27,7 @@ erDiagram
         long id
         string name
         string description
+        boolean enabled "Stato di abilitazione"
     }
 
     govhub_user_groups {
@@ -50,6 +51,7 @@ erDiagram
     govhub_authorizations {
         long id PK
         long id_govhub_user FK "Utente autorizzato"
+        long id_govhub_group FK "Gruppo di autorizzazioni"
         datetime expiration_date "Data di scadenza dell'autorizzazione"
         long id_govhub_role PK "Ruolo concesso"
         datetime created_at
