@@ -7,11 +7,10 @@ erDiagram
 
     govhub_applications ||..o{ govhub_services : ""
     govhub_applications ||..|{ govhub_roles : ""
-    govhub_applications ||..o{ govhub_app_organizations : ""
     govhub_roles ||..o{ govhub_assegnable_roles : "can assign"   
     govhub_assegnable_roles }o..|| govhub_roles : ""
     govhub_roles ||..|{ govhub_authorizations : ""
-    govhub_app_organizations }o..|| govhub_organizations  : ""
+    govhub_services }o..|| govhub_organizations  : ""
     govhub_services ||..o{ govhub_auth_services : ""
     govhub_authorizations ||..o{ govhub_auth_services : ""
     govhub_authorizations }|..o| govhub_groups : ""
@@ -96,13 +95,9 @@ erDiagram
     govhub_services {
         long id PK 
         long id_govhub_application FK
+        long id_govhub_organization FK
         string name "Nome sintetico"
         string description "Descrizione"
-    }
-
-    govhub_app_organizations {
-        long id_govhub_application FK
-        long id_govhub_organization FK 
     }
 
     govhub_applications {
