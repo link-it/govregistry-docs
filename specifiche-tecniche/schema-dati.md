@@ -7,8 +7,6 @@ erDiagram
 
     govhub_applications ||..o{ govhub_services : ""
     govhub_applications ||..|{ govhub_roles : ""
-    govhub_roles ||..o{ govhub_assegnable_roles : "can assign"   
-    govhub_assegnable_roles }o..|| govhub_roles : ""
     govhub_roles ||..|{ govhub_authorizations : ""
     govhub_services }o..|| govhub_organizations  : ""
     govhub_services ||..o{ govhub_auth_services : ""
@@ -114,11 +112,6 @@ erDiagram
         string name
         string description
         boolean is_service_scoped
-    }
-
-    govhub_assegnable_roles {
-        long id_govhub_role
-        long id_govhub_assignable_role
     }
 
 
