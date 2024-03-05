@@ -21,13 +21,14 @@ erDiagram
 
 
     govhub_groups {
-        long id
+        long id PK
         string name
         string description
         boolean enabled "Stato di abilitazione"
     }
 
     govhub_user_groups {
+        long id PK
         long id_user FK
         long id_group FK
         datetime expiration_date "Data di scadenza dell'associazione"
